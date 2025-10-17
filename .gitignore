@@ -6,7 +6,8 @@ app/.pdm-python
 __pycache__/
 *.py[cod]
 *$py.class
-
+db/
+redis/
 # C extensions
 *.so
 
