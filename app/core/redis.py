@@ -12,13 +12,10 @@ class RedisService:
     async def init_redis(self) -> None:
         """Инициализация подключения к Redis"""
         if settings.REDIS_URL:
-            # Render дает REDIS_URL в формате redis:// или rediss://
             self.redis_client = redis.Redis.from_url(
-                settings.REDIS_URL,
-                decode_responses=True
+                settings.REDIS_URL, decode_responses=True
             )
         else:
-            # Локальная разработка
             self.redis_client = redis.Redis(
                 host=settings.REDIS_HOST,
                 port=settings.REDIS_PORT,

@@ -31,11 +31,10 @@ class Settings(BaseSettings):
     @property
     def pg_connection_string(self):
         if self.DATABASE_URL:
-            # Render дает DATABASE_URL в формате postgresql://
-            # Нужно заменить на postgresql+asyncpg://
-            return self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+            return self.DATABASE_URL.replace(
+                "postgresql://", "postgresql+asyncpg://", 1
+            )
         else:
-            # Локальная разработка
             return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
     model_config = ConfigDict(

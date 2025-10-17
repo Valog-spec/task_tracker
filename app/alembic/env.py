@@ -8,23 +8,12 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from core.config import settings
 from models.base import Base
-#
-# pg_connection_string = (
-#     f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@"
-#     f"{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
-# )
-# config = context.config
-# config.set_main_option("sqlalchemy.url", pg_connection_string)
-#
-# if config.config_file_name is not None:
-#     fileConfig(config.config_file_name)
-#
-# target_metadata = Base.metadata
+
 if settings.DATABASE_URL:
-    # Для Render - используем DATABASE_URL
-    pg_connection_string = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+    pg_connection_string = settings.DATABASE_URL.replace(
+        "postgresql://", "postgresql+asyncpg://", 1
+    )
 else:
-    # Для локальной разработки
     pg_connection_string = (
         f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@"
         f"{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
@@ -38,8 +27,8 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+
 def run_migrations_offline() -> None:
-    # Используем connection string из настроек
 
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
