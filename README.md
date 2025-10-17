@@ -24,9 +24,15 @@
 ## 🚀 Быстрый запуск
 
 ### Приложение развернуто на Render
+Для этого было развернуто 4 сервиса:
+- Redis
+- PostgreSQL
+- Streamlit app
+- Task Tracker app
 
-* Streamlit интерфейс: https://task-streamlit.onrender.com
-* API документация: https://task-tracker-j0yh.onrender.com/docs
+**Streamlit интерфейс**: https://task-streamlit.onrender.com
+
+**API документация**: https://task-tracker-j0yh.onrender.com/docs
 
 ### Для локального развертывания:
 
