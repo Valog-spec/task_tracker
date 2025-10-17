@@ -27,7 +27,6 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "my_db"
     POSTGRES_PORT: int = 5432
-    POOL_SIZE: int = 20
 
     @property
     def pg_connection_string(self):

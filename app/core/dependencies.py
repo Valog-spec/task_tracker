@@ -23,7 +23,6 @@ from services.user_service import UserService
 async_engine = create_async_engine(
     settings.pg_connection_string,
     pool_pre_ping=True,
-    pool_size=settings.POOL_SIZE,
 )
 async_session = async_sessionmaker(
     async_engine,
