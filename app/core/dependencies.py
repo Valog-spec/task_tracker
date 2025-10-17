@@ -12,16 +12,16 @@ from services.auth_service import AuthService
 from services.task_service import TaskService
 from services.user_service import UserService
 
-pg_connection_string = (
-    f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@"
-    f"{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
-)
+# pg_connection_string = (
+#     f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@"
+#     f"{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+# )
 # pg_connection_string = (
 #     f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@"
 #     f"localhost:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
 # )
 async_engine = create_async_engine(
-    pg_connection_string,
+    settings.pg_connection_string,
     pool_pre_ping=True,
     pool_size=settings.POOL_SIZE,
 )
