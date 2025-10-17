@@ -3,7 +3,7 @@ services:
   streamlit_app:
     build: ./streamlit
     environment:
-     API_BASE_URL: ${API_BASE_URL}
+     API_BASE_URL: ${API_BASE_URL:-http://app:8080}
     ports:
       - "8501:8501"
   app:
@@ -11,13 +11,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_HOST: ${REDIS_HOST}
+      POSTGRES_USER: ${POSTGRES_USER:-myapp_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-myapp_password}
+      POSTGRES_DB: ${POSTGRES_DB:-myapp}
+      POSTGRES_HOST: ${POSTGRES_HOST:-db_postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
     depends_on:
       db_postgres:
         condition: service_healthy
@@ -28,9 +28,9 @@ services:
     container_name: postgres
     image: postgres:13
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-myapp_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-myapp_password}
+      POSTGRES_DB: ${POSTGRES_DB:-myapp}
       POSTGRES_LOG_DESTINATION: stderr
       POSTGRES_LOGGING_COLLECTOR: on
     ports:
@@ -38,7 +38,7 @@ services:
     volumes:
       - ./db/:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-myapp_user} -d ${POSTGRES_DB:-myapp}" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -52,3 +52,7 @@ services:
     volumes:
       - ./redis/:/data
     command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  redis_data:
