@@ -33,5 +33,3 @@ ENV PYTHONPATH="/app"
 EXPOSE 8080
 
 CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8080"]
-# CMD ["sh", "-c", "cd app && alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8080"]
-# CMD ["sh", "-c", "echo '=== FILES IN /app ===' && ls -la /app && echo '=== FIND MAIN.PY ===' && find /app -name main.py && echo '=== STARTING APP ===' && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8080"]
