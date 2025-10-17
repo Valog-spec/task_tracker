@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from endpoints import auth, tasks, user
 
-routers = APIRouter()
+routers = APIRouter(prefix="/api")
 
 routers.include_router(tasks.router)
 routers.include_router(auth.router)
