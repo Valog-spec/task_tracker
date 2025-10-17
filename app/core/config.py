@@ -16,16 +16,16 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # Redis настройки
-    REDIS_HOST: str = "localhost"
+    REDIS_HOST: str = "redis"
     REDIS_PORT: int = 6379
     REDIS_PASSWORD: Optional[str] = None
     REDIS_DB: int = 0
 
     # Database
     POSTGRES_HOST: str = "db_postgres"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "my_db"
+    POSTGRES_USER: str = "myapp_user"
+    POSTGRES_PASSWORD: str = "myapp_password"
+    POSTGRES_DB: str = "myapp"
     POSTGRES_PORT: int = 5432
 
     @property
@@ -35,11 +35,8 @@ class Settings(BaseSettings):
                 "postgresql://", "postgresql+asyncpg://", 1
             )
         else:
-            return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-
-    model_config = ConfigDict(
-        env_file=Path(__file__).parent.parent.parent / ".env", extra="ignore"
-    )
+            return (f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:"
+                    f"{self.POSTGRES_PORT}/{self.POSTGRES_DB}")
 
 
 settings = Settings()

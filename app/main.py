@@ -23,7 +23,10 @@ def create_application() -> FastAPI:
 
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=[
+            "https://task-streamlit.onrender.com",
+            "http://localhost:8501",
+        ],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
