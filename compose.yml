@@ -1,0 +1,54 @@
+services:
+
+  streamlit_app:
+    build: ./streamlit
+    environment:
+     API_BASE_URL: ${API_BASE_URL}
+    ports:
+      - "8501:8501"
+  app:
+    build: ./app
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+    depends_on:
+      db_postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  db_postgres:
+    container_name: postgres
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_LOG_DESTINATION: stderr
+      POSTGRES_LOGGING_COLLECTOR: on
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./db/:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - ./redis/:/data
+    command: redis-server --appendonly yes
